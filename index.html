@@ -6,27 +6,11 @@
     <h1 align="center">2b2t Server Status:</h1>
     <h1 align="center" id="status"></h1>
     <script type="text/javascript">
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://mcapi.us/server/status?ip=2b2t.org', true);
-
-      xhr.onload = function () {
-        if (this.status == 200) {
-          var data = JSON.parse(this.responseText);
-
-          if (data.online) {
-            document.getElementById("status").innerHTML = "<h1 align='center' style='color:green; padding:20px;'>The server is currently up!</h1>";
-          } else {
-            document.getElementById("status").innerHTML = "<h1 align='center' style='color:red; padding:20px;'>The server is currently down.</h1>";
-          }
-
-        } else {
-          console.log('Error');s
-        }
-      }
-
-      xhr.send();
-
+      fetch("https://mcapi.us/server/status?ip=2b2t.org")
+        .then(r => r.json())
+        .then(({ online }) => {
+          document.getElementById("status").innerHTML = `<h1 align='center' style='color:${online ? "green" : "red"}; padding:20px;'>The server is currently ${online ? "up" : "down"}!</h1>`;
+        });
     </script>
-
   </body>
 </html>
